@@ -12,7 +12,7 @@ use think\facade\Cache;
 use think\facade\Config;
 use think\Db;
 use think\facade\Session;
-use think\Request;
+use think\facade\Request;
 
 /**
  * 权限认证类
