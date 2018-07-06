@@ -47,6 +47,8 @@ class Auth
         'allow_visit' => [
             '/file/upload'
         ],
+        //默认登陆页面
+        'login_path' => 'login/login'
     );
 
     //用户信息
@@ -108,7 +110,7 @@ class Auth
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function check($name = [], $uid = null, $relation = 'or')
+    public function check($name = null, $uid = null, $relation = 'or')
     {
         is_null($name) && $name = $this->getPath();
         is_null($uid) && $uid = $this->getUserId();
@@ -458,5 +460,21 @@ class Auth
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取权限相关配置文件
+     * @param null $config
+     * @return array|mixed
+     * @author: Huang
+     */
+    public function getConif($config = null)
+    {
+        if (is_null($config)) {
+            $configs = $this->config;
+        } else {
+            $configs = $this->config[$config];
+        }
+        return $configs;
     }
 }

@@ -27,8 +27,8 @@ class AdminAuth
         app()->user = Auth::getInstance()->getUserInfo();
 
         if (!Auth::getInstance()->notNeedLogin()) {
-            Auth::getInstance()->isLogin() || $this->redirect('public/login');
-            Auth::getInstance()->check() || $this->error('您无权限操作');
+            Auth::getInstance()->isLogin() || $this->redirect(Auth::getInstance()->getConif('login_path'));
+            Auth::getInstance()->check() || $this->error('未授权访问');
         }
 
         return $next($request);

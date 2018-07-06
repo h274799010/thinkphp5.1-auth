@@ -22,5 +22,7 @@ return [
         '/file/upload'
     ],
 
+    //默认登陆页面
+    'login_path'=>'login/login'
 
 ];
