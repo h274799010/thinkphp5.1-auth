@@ -1,18 +1,20 @@
 {
-    "name": "huangsen/think5.1-auth",
-    "description": "thinkphp5.1 Permission verification only to myself",
-    "authors": [
-        {
-            "name": "gold",
-            "email": "gold@qq.com"
-        }
-    ],
-    "require": {},
-    "version": "1.0.0",
-    "minimum-stability": "stable",
-    "autoload": {
-        "psr-4": {
-            "huangsen\\auth\\": "src/"
-        }
+  "name": "huangsen/think5.1-auth",
+  "description": "thinkphp5.1 Permission verification only to myself",
+  "authors": [
+    {
+      "name": "gold",
+      "email": "gold@qq.com"
     }
+  ],
+  "require": {
+    "firebase/php-jwt": "^5.0"
+  },
+  "version": "1.0.1",
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "huangsen\\auth\\": "src/"
+    }
+  }
 }

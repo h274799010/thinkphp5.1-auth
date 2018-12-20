@@ -31,7 +31,7 @@ CREATE TABLE `gold_auth_role`  (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
   `create_time` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `pid` int(2) UNSIGNED NULL DEFAULT NULL COMMENT '父级ID',
+  `path` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色路径',
   `listorder` int(3) NOT NULL DEFAULT 0 COMMENT '排序，优先级，越小优先级越高',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `parentId`(`pid`) USING BTREE,
@@ -66,6 +66,7 @@ CREATE TABLE `gold_auth_rule`  (
   `update_time` int(11) NULL DEFAULT 0 COMMENT '更新时间',
   `pid` int(2) UNSIGNED NULL DEFAULT NULL COMMENT '父级ID',
   `fontawesome` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'fontawesome的图标',
+  `path` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '父级路径',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '规则表' ROW_FORMAT = Dynamic;

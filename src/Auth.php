@@ -1,11 +1,12 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP 5 [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2018 .
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
+/**
+ * Created by PhpStorm.
+ * User: HuangSen
+ * Date: 2018/12/20
+ * Time: 16:26
+ * @author: Huang
+ */
+
 namespace huangsen\auth;
 
 use think\facade\Cache;
@@ -209,7 +210,9 @@ class Auth
                 }
             }
 
-            if (empty($rule_data)) return false;
+            if (empty($rule_data)) {
+                return false;
+            }
 
             $rule_data = array_unique($rule_data);
 
@@ -222,7 +225,9 @@ class Auth
                 ->field('id,condition,name')
                 ->select();
 
-            if (empty($rule_data)) return false;
+            if (empty($rule_data)) {
+                return false;
+            }
 
             //获取用户信息,一维数组
             $user = $this->getUserInfoById($uid);
@@ -247,13 +252,15 @@ class Auth
                     $list[] = $rule[$name];
                 }
             }
-
-            if ($this->config['auth_cache'])
-                Cache::set($this->getRuleKey($uid), $list);
+            $rule_data = $list;
+            unset($list);
+            if ($this->config['auth_cache']) {
+                Cache::set($this->getRuleKey($uid), $rule_data);
+            }
 
         }
 
-        return $list;
+        return $rule_data;
 
     }
 
@@ -281,7 +288,7 @@ class Auth
     {
         is_null($uid) && $uid = $this->getUserId();
 
-        $role_user_data = $this->config['auth_cache'] ? Session::get($this->getRoleUserKey()) : [];
+        $role_user_data = $this->config['auth_cache'] ? Cache::get($this->getRoleUserKey($uid)) : [];
 
         if (empty($role_user_data) || !is_array($role_user_data)) {
 
@@ -290,10 +297,13 @@ class Auth
                 ->join($this->config['role'] . " g", "a.role_id=g.id")
                 ->field('user_id,role_id,name,rules')->select();
 
-            if (empty($role_user_data)) return false;
+            if (empty($role_user_data)) {
+                return false;
+            }
 
-            if ($this->config['auth_cache'])
-                Session::set($this->getRoleUserKey(), $role_user_data);
+            if ($this->config['auth_cache']) {
+                Cache::set($this->getRoleUserKey($uid), $role_user_data);
+            }
         }
 
         return $role_user_data;
@@ -302,11 +312,12 @@ class Auth
 
     /**
      * 获取用户角色 session key
+     * @param $key 需要获取的key
      * @return string
      */
-    private function getRoleUserKey()
+    private function getRoleUserKey($key)
     {
-        return $this->getKey('role_user_list');
+        return $this->getKey('role_user_list_' . $key);
     }
 
     /**
@@ -392,10 +403,11 @@ class Auth
      */
     public function getUserIdByRoleId($role_id = null)
     {
-
-        $where['role_id'] = $role_id;
+        if (is_null($role_id)) {
+            return false;
+        }
         $user_ids = Db::name($this->config['role_user'])
-            ->where($where)
+            ->where('role_id', $role_id)
             ->value('user_id');
         return $user_ids;
     }
@@ -407,7 +419,8 @@ class Auth
      */
     public function getPath()
     {
-        return '/' . str_replace('.', '/', strtolower(Request::module() . '/' . Request::controller() . '/' . Request::action()));
+        return '/' . str_replace('.', '/',
+                strtolower(Request::module() . '/' . Request::controller() . '/' . Request::action()));
     }
 
     /**
@@ -432,8 +445,9 @@ class Auth
 
             $userinfo = $user->field($this->config['users_auth_fields'])->where($_pk, $uid)->find();
 
-            if ($this->config['auth_cache'])
+            if ($this->config['auth_cache']) {
                 Session::set($this->getUserKey($uid), $userinfo);
+            }
         }
         return $userinfo;
     }

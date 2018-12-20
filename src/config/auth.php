@@ -23,6 +23,14 @@ return [
     ],
 
     //默认登陆页面
-    'login_path'=>'login/login'
+    'login_path' => 'login/login',
+
+    'jwt' => [
+        //不需要登录可以访问的
+        'public_url' => [
+            '/v1/public/*'
+        ],
+        'JWT_TTL' => 7 * 24 * 60 * 60
+    ]
 
 ];
